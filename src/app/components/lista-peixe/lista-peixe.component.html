@@ -1,0 +1,182 @@
+<div class="container" id="main-container">
+
+   <div class="row">
+      <ul class="navbar-nav mr-auto">
+         <li class="nav-item  mt-5">
+            <a class="nav-link btn btn-success adicionar" (click)="onOpenModal(null!, 'add')">Cadastrar Peixe <span
+                  class="sr-only"></span></a>
+         </li>
+      </ul>
+      <div *ngFor="let peixe of peixes" class="card">
+         <img src="{{peixe?.imageUrl}}" alt="" class="img-fluid rounded-circle">
+         <div class="card-body">
+            <ul class="list-group list-group-flush">
+               <li class="list-group-item"><b>{{peixe?.especie}}</b>:</li>
+               <li class="list-group-item">PH: {{peixe?.ph}}</li>
+               <li class="list-group-item">Tipo de Água: {{peixe?.tpAgua}}</li>
+               <li class="list-group-item">Volume Minimo: {{peixe?.minVol}}L</li>
+               <li class="list-group-item">Cardume : {{peixe?.cardume}}</li>
+            </ul>
+
+         </div>
+         <div class="card-body">
+            <a (click)="onOpenModal(peixe, 'edit')" class="btn btn-warning mx-1">Atualizar</a>
+            <a (click)="onOpenModal(peixe, 'delete')" class="btn btn-danger">Apagar</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<!-- Add Peixe Modal -->
+<div class="modal fade" id="addPeixeModal" tabindex="-1" role="dialog" aria-labelledby="addPeixeModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="addPeixeModalLabel">Cadastrar Peixe</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #addForm="ngForm" (ngSubmit)="onAddPeixe(addForm)">
+               <div class="form-group">
+                  <label for="name">Espécie</label>
+                  <input type="text" ngModel name="especie" class="form-control" id="especie" required>
+               </div>
+               <div class="form-group">
+                  <div class="form-group">
+                     <label for="ph">PH</label>
+                     <select ngModel name="ph" id="ph" class="form-control" required>
+                        <option selected>Alcalino</option>
+                        <option>Neutro</option>
+                        <option>Acido</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <div class="form-group">
+                     <label for="tpAgua">Tipo de Água</label>
+                     <select ngModel name="tpAgua" id="tpAgua" class="form-control" required>
+                        <option selected>Doce</option>
+                        <option>Salgada</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label for="phone">Cardume</label>
+                  <input type="number" ngModel name="cardume" class="form-control" id="cardume" required>
+               </div>
+               <div class="form-group">
+                  <label for="minVol">Volume Minimo</label>
+                  <input type="number" ngModel name="minVol" class="form-control" id="minVol" required>
+               </div>
+               <div class="form-group">
+                  <label for="phone">Image URL</label>
+                  <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" required>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="add-peixe-form" class="btn btn-secondary"
+                     data-dismiss="modal">Fechar</button>
+                  <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Salvar</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="updatePeixeModal" tabindex="-1" role="dialog" aria-labelledby="peixeEditModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="updatePeixeModalLabel">Editar {{editPeixe?.especie}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #editForm="ngForm">
+               <input type="hidden" ngModel="{{editPeixe?.id}}" name="id" class="form-control" id="id" placeholder="Id">
+               <div class="form-group">
+                  <label for="especie">Especie</label>
+                  <input type="text" ngModel="{{editPeixe?.especie}}" name="especie" class="form-control" id="especie"
+                     aria-describedby="emailHelp" placeholder="especie">
+               </div>
+               <div class="form-group">
+                  <div class="form-group">
+                     <label for="ph">PH</label>
+                     <select ngModel="{{editPeixe?.ph}}" name="ph" id="ph" class="form-control" required>
+                        <option selected>Alcalino</option>
+                        <option>Neutro</option>
+                        <option>Acido</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <div class="form-group">
+                     <label for="tpAgua">Tipo de Água</label>
+                     <select ngModel="{{editPeixe?.tpAgua}}" name="tpAgua" id="tpAgua" class="form-control" required>
+                        <option selected>Doce</option>
+                        <option>Salgada</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label for="cardume">Cardume</label>
+                  <input type="number" ngModel="{{editPeixe?.cardume}}" name="cardume" class="form-control" id="cardume"
+                     name="cardume" placeholder="Cardume">
+               </div>
+               <div class="form-group">
+                  <label for="minVol">Volume Minimo</label>
+                  <input type="number" ngModel="{{editPeixe?.minVol}}" name="minVol" class="form-control" id="minVol"
+                     placeholder="minVol">
+               </div>
+               <div class="form-group">
+                  <label for="imageUrl">Image URL</label>
+                  <input type="text" ngModel="{{editPeixe?.imageUrl}}" name="imageUrl" class="form-control"
+                     id="imageUrl" placeholder="Image URL">
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Fechar</button>
+                  <button (click)="onUpdatePeixe(editForm.value)" data-dismiss="modal"
+                     class="btn btn-primary">Salvar</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deletePeixeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteModelLabel">Excluir Peixe</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Tem certeza que deseja excluir {{deletePeixe?.especie}}?</p>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">NÃO</button>
+               <button (click)="onDeletePeixe(deletePeixe.id)" class="btn btn-danger" data-dismiss="modal">SIM</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<!-- Notification for no employees -->
+<div *ngIf="peixes?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+   <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">SEM PEIXES!</h4>
+      <p>Nenhum Peixe Encontrado</p>
+   </div>
+</div>
